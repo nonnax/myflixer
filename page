@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# Id$ nonnax 2022-02-18 13:51:52 +0800
+require 'readline'
+
+loop do
+  s=Readline.readline "myflixeroo page: ", true
+  break unless s.size>0
+  page, type = s.split
+  puts "#{type} page #{page}"
+  cmd ="./get #{page} #{type}"
+  IO.popen(cmd.strip, &:read)
+end
