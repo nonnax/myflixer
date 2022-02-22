@@ -4,13 +4,14 @@ require 'mechanize'
 require 'pp'
 
 URL_ROOT='https://myflixer.to'
-i, stop, t=ARGV
+i, t, _=ARGV
+
 t ||= 'tv'
 type = %w[tv-show movie].grep(/#{t}/).first
 t = type.sub('-show', '')
-start=i.to_i
-stop=stop || start
-stop &&= stop.to_i
+
+start=((i.to_i-1)*5)+1
+stop=((start-1)+5)
 
 th=[]
 pages=[]
