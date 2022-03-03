@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Id$ nonnax 2022-03-02 15:33:35 +0800
+type="${2:-mov}"
+page="${1:-1}"
+
+./flixer "$page" "$type" | cut -f2,3 | fzf | cut -f2 | pipefox
