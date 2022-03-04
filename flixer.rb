@@ -20,7 +20,7 @@ def get_pages
   puts res
 end
 
-def get(i, type: 'mov')
+def get_rows(i, type: 'mov')
   work i, type
 end
 
@@ -28,10 +28,10 @@ def work pg, t
   
   type = %w[tv-show movie].grep(/#{t}/).first
   t = type.sub('-show', '')
-  res=[t]
+  res=[]
   th=[]
   pages=[]
-  pager=50.pages_of(6)
+  pager=200.pages_of(6)
 
   pager[pg.to_i].each do |i|
    th << Thread.new(i, type) do |i|
@@ -71,7 +71,7 @@ def work pg, t
   end
 end
 
-get_pages
+# get_pages
 # .map{|a| [URL_ROOT, a.attributes["href"].value].join }
 
 # found = pages.first.links.select{|e| !e.text.empty? && e.href.to_s.match(/genre\//) }
