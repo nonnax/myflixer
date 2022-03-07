@@ -4,28 +4,41 @@ require 'rubytools/cubadoo'
 
 NAVLINKS=%w[movie tv].zip(%w[movies tv-shows]).to_h
 
-def layout(&block)
+class << self
+  attr_accessor :active
+end
 
-  link_img_banner_ = tagz do 
+def link_img_banner_ 
+  tagz do 
     p_{ a_( href: "/" ){img_ src: "/images/banner.jpg", style:"width:100%"} }
   end
-  nav_links_ = tagz do
-    p_(id: 'navlinks') {
+end
+
+def nav_links_
+  tagz do
+    p_{ a_( href: "/" ){img_ src: "/images/banner.jpg", style:"width:100%"} }
+    div_(class: 'navbar') {
       NAVLINKS.each do |k, v|
-        a_( href: "/#{k}" ){ v }
-        span_{' '}
+        div_{
+          link_opts={href: "/#{k}"}
+          @active ||= ARGV.pop
+          link_opts.merge!(class: 'active') if k.match?(/#{@active}/)
+          a_( **link_opts ){ v }
+        }
       end
     }
   end
+end
 
+def layout(&block)
   tagz do
     html_ do
       head_ {
+        title_ 'tv ni mang tomas'
         link_(rel: 'stylesheet', type: "text/css",  href: '/css/style.css')
       }
       body_ {
         div_(id: 'header') { 
-          link_img_banner_
           nav_links_
         }
         div_(id: 'content', &block)
@@ -40,10 +53,10 @@ layout do
   tagz do
     ARGF.each_line(chomp: true) do |l|
       unless l.match?(/\t/)
-        a_( href: "/"+l){ h2_{ "#{l}"} } unless l.match?(/index/)
+        # File.write('active.txt', l)
         next
       end
-      div_ do
+      div_(class: 'item') do
         l.split(/\t/) => [img, title, href]
         a_( href: ){img_ src: img, title: }
         br_

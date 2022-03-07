@@ -5,8 +5,8 @@ puts 'index'
 # first row as header 13-1
 cmds=
 [
-  './flixer 1 mov | head -n13', 
-  './flixer 1 tv  | head -n13'
+  './flixer 1 mov | head -n20', 
+  './flixer 1 tv  | head -n20'
 ]
 
 cmds.each do |cmd| 

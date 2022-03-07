@@ -4,9 +4,9 @@ path='./site/public/views'
 
 cmds=
 [
-  "./flixer 1 mov   | ./flixml.rb > #{path}/movie.erb",
-  "./flixer 1 tv    | ./flixml.rb > #{path}/tv.erb",
-  "./make_index.rb  | ./flixml.rb > #{path}/index.erb",
+  "./flixer 1 mov   | ./flixml.rb mov > #{path}/movie.erb",
+  "./flixer 1 tv    | ./flixml.rb tv > #{path}/tv.erb",
+  "./make_index.rb  | ./flixml.rb index > #{path}/index.erb",
 ]
 
 cmds.each do |cmd|
