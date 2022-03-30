@@ -46,9 +46,9 @@ layout do
       end
       div_(class: 'item') do
         l.split(/\t/) => [img, title, href]
-        a_( href:, target: '_blank' ){img_ src: img, title: }
+        a_( href: , target: '_blank'){img_ src: img, title: }
         br_
-        a_( href: ){title}
+        a_( href: , target: '_blank'){title}
       end
     end
   end

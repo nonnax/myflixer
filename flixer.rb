@@ -55,8 +55,8 @@ def work page_set, t: 'mov'
             .search('a')
             .map do |a| 
               [].tap do |url_build|
-                url=a.attributes["href"].value
-                url_build<<url
+                url = a.attributes["href"].value
+                url_build << url
                 url_build.prepend(URL_ROOT) if url.match(/^\//)
               end.join 
             end
