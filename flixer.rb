@@ -38,6 +38,8 @@ def work page_set, t: 'mov'
         url="https://myflixer.to/#{type}?page=#{i}"
         agent=Mechanize.new
         page=agent.get(url)
+        agent=Mechanize.new
+        page=agent.get(url)
         pages<<page.dup
       end
   end
