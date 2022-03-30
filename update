@@ -4,8 +4,8 @@ path='./site/public/views'
 
 cmds=
 [
-  "./flixer 1 mov   | ./flixml.rb mov > #{path}/movie.erb",
-  "./flixer 1 tv    | ./flixml.rb tv > #{path}/tv.erb",
+  "./flixer mov 1  | ./flixml.rb mov > #{path}/movie.erb",
+  "./flixer tv 1    | ./flixml.rb tv > #{path}/tv.erb",
   "./make_index.rb  | ./flixml.rb index > #{path}/index.erb",
 ]
 

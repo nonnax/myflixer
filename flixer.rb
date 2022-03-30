@@ -18,7 +18,7 @@ def get_pages
   pages.map!(&:to_i)
   t ||= 'tv'
 
-  page_set = 15_000.pages_of(5)
+  page_set = 15_000.pages_of(10)
   pages.each do |i|
     res=Cache.cached([t,pages.join].join, ttl: 300*6) do
       work page_set[i], t: t
@@ -73,39 +73,7 @@ rescue => e
   return nil    
 end
 
-# get_pages
-# .map{|a| [URL_ROOT, a.attributes["href"].value].join }
 
-# found = pages.first.links.select{|e| !e.text.empty? && e.href.to_s.match(/genre\//) }
-# found.each do |pg|
-  # puts pg.text.strip
-# end
-# 
-# re=Regexp.new "#{t}\/"
-# 
-# pages.map do |page|
-  # page
-  # .links
-  # .select{|e| !e.text.empty? && e.href.to_s.match(re) }
-  # .sort_by{|e| e.text}
-# end
-# .flatten
-# .each do |pg|
-    # # p (pg.methods - Object.methods)
-    # puts [pg.text, pg.resolved_uri.to_s].join("\t")
-    # # puts pg.text
-  # end
-
-# pp found.click
-# pages.map do |page|
-  # page.search('//img[contains(@class,"film-poster-img")]')
-      # .map{|e|
-          # ea=e.attributes
-          # puts [ea['alt'], ea['data-src']]
-                # .map(&:to_s)
-                # .join("\t")
-       # }
-# end
 def get_rows(page=1, **h, &block)
   links={}
   get_page(page, **h).each do |page|
@@ -117,5 +85,3 @@ def get_rows(page=1, **h, &block)
     }
   end
 end
-
-# get_pages
