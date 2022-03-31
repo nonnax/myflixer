@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 # Id$ nonnax 2022-02-27 15:41:22 +0800
+# NOTE: ARGV sets @active page for navlink
+
 require 'rubytools/cubadoo'
 
 NAVLINKS=%w[movie tv].zip(%w[movies tv-shows]).to_h
@@ -21,7 +23,6 @@ def nav_links_
       NAVLINKS.each do |k, v|
         div_{
           link_opts={href: "/#{k}"}
-          @active ||= ARGV.pop
           link_opts.merge!(class: 'active') if k.match?(/#{@active}/)
           a_( **link_opts ){ v }
         }
@@ -32,21 +33,15 @@ end
 
 def layout(&block)
   tagz do
-    html_ do
-      head_ {
-        title_ 'tv ni mang tomas'
-        link_(rel: 'stylesheet', type: "text/css",  href: '/css/style.css')
-      }
-      body_ {
-        div_(id: 'header') { 
-          nav_links_
-        }
-        div_(id: 'content', &block)
-        div_(class: 'footer'){ link_img_banner_ }
-      }
-    end
+    div_(id: 'header') { nav_links_}
+    div_(id: 'content', &block)
   end
 end
+
+#
+# run templater
+#
+@active ||= ARGV.pop  # ARGV sets active page for navlink
 
 doc=
 layout do
