@@ -4,47 +4,48 @@ require 'mechanize'
 require 'pp'
 require 'rubytools/numeric_ext'
 require 'rubytools/cache'
-require 'rubytools/string_ext'
-require 'rubytools/thread_ext'
-require 'rubytools/xxhsum'
-require 'json'
 
 URL_ROOT='https://myflixer.to'
 
 
 def get_pages
-  t, *pages=ARGV
-
-  pages.map!(&:to_i)
+  i, t, _=ARGV
+  i ||= 1
+  i && i.to_i-1
   t ||= 'tv'
 
-  page_set = 15_000.pages_of(5)
-  pages.each do |i|
-    res=Cache.cached([t,pages.join].join, ttl: 300*6) do
-      work page_set[i], t: t
-    end
-    puts res
+  res=Cache.cached([i,t].join, ttl: 600) do
+    work i, t
   end
+  puts res
 end
 
-def work page_set, t: 'mov'
+def get(i, type: 'mov')
+  work i, type
+end
+
+def work pg, t
   
   type = %w[tv-show movie].grep(/#{t}/).first
   t = type.sub('-show', '')
-
+  res=[t]
+  th=[]
   pages=[]
-  th=page_set.map do |i|
-      Thread.new(type, i) do |type, i| 
-        url="https://myflixer.to/#{type}?page=#{i}"
-        agent=Mechanize.new
-        page=agent.get(url)
-        agent=Mechanize.new
-        page=agent.get(url)
-        pages<<page.dup
-      end
-  end
-  th.each(&:join)
+  pager=50.pages_of(5)
 
+  pager[pg.to_i].each do |i|
+   th << Thread.new(i, type) do |i|
+      url="https://myflixer.to/#{type}?page=#{i}"
+      agent=Mechanize.new
+      page=agent.get(url)
+      pages<<page
+    end
+  end
+
+  th.map(&:join)
+  # 
+
+  res+=
   pages.map do |page|
     page
       .search('//img[contains(@class,"film-poster-img")]')
@@ -57,25 +58,19 @@ def work page_set, t: 'mov'
             .search('a')
             .map do |a| 
               [].tap do |url_build|
-                url = a.attributes["href"].value
-                url_build << url
+                url=a.attributes["href"].value
+                url_build<<url
                 url_build.prepend(URL_ROOT) if url.match(/^\//)
               end.join 
             end
             .last          
           ]
-         .map(&:to_s) =>[image, title, link ]
-
-         # {image:, title:, link: }
-         [image, title, link ].join("\t")
+         .map(&:to_s) 
+         .join("\t") 
       end
   end
-rescue => e
-  p [:error, e, page_set] 
-  return nil    
 end
 
-# get_pages
 # .map{|a| [URL_ROOT, a.attributes["href"].value].join }
 
 # found = pages.first.links.select{|e| !e.text.empty? && e.href.to_s.match(/genre\//) }
@@ -108,16 +103,4 @@ end
                 # .join("\t")
        # }
 # end
-def get_rows(page=1, **h, &block)
-  links={}
-  get_page(page, **h).each do |page|
-    page.map.with_index{|r, i|
-      r=>{image:, title:, link:}
-      key=image.xxhsum
-      links[key]=[link, image]
-      block.call( [title, link, image])
-    }
-  end
-end
 
-# get_pages

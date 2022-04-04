@@ -38,27 +38,3 @@ def layout(&block)
   end
 end
 
-#
-# run templater
-#
-@active ||= ARGV.pop  # ARGV sets active page for navlink
-
-doc=
-layout do
-  tagz do
-    ARGF.each_line(chomp: true) do |l|
-      unless l.match?(/\t/)
-        # File.write('active.txt', l)
-        next
-      end
-      div_(class: 'item') do
-        l.split(/\t/) => [img, title, href]
-        a_( href: , target: '_blank'){img_ src: img, title: }
-        br_
-        a_( href: , target: '_blank'){title}
-      end
-    end
-  end
-end
-
-puts doc
