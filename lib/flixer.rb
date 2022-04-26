@@ -7,7 +7,6 @@ require 'rubytools/cache'
 
 URL_ROOT='https://myflixer.to'
 
-
 def get_pages
   i, t, _=ARGV
   i ||= 1
@@ -44,7 +43,6 @@ def work pg, t
 
   th.map(&:join)
   # 
-
   res+=
   pages.map do |page|
     page
