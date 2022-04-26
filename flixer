@@ -2,3 +2,4 @@
 # Id$ nonnax 2022-04-04 21:44:47 +0800
 require_relative 'lib/flixer'
 get_pages
+
