@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 # Id$ nonnax 2022-02-26 17:07:45 +0800
-@settings={}
-@settings[:path]='./site/views'
+path='./site/views'
 
 cmds=
 [
-  "./flixer 1 mov   | ./flixml mov > #{@settings[:path]}/movie.erb",
-  "./flixer 1 tv    | ./flixml tv > #{@settings[:path]}/tv.erb",
-  "./make_index.rb  | ./flixml index > #{@settings[:path]}/index.erb",
+  "./flixer mov 1  | ./flixml.rb mov > #{path}/movie.erb",
+  "./flixer tv 1    | ./flixml.rb tv > #{path}/tv.erb",
+  "./make_index.rb  | ./flixml.rb index > #{path}/index.erb",
 ]
 
 cmds.each do |cmd|
